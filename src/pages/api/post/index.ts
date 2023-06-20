@@ -41,7 +41,7 @@ async function handler(
     //
     // Create a POST
     else if (req.method === "POST") {
-      const { content } = req.body;
+      const { content, imageUrl = '' } = req.body;
 
       if (!content) {
         return res.status(400).json({ message: "Bad Request" });
@@ -55,6 +55,7 @@ async function handler(
 
       const newPost = new Post({
         content,
+        imageUrl,
         author: userId,
       });
 
