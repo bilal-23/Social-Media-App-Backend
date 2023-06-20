@@ -46,7 +46,7 @@ async function handler(
         // UPDATE POST BY ID
         else if (req.method === "PATCH") {
             // GET UPDATED CONTENT FROM BODY
-            const { content, imageUrl } = req.body;
+            const { content, imageUrl = '' } = req.body;
             if (!content) return res.status(400).json({ message: "Content is required" });
 
             // UPDATE POST BY ID
