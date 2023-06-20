@@ -3,15 +3,11 @@ import { connectMongoDB } from "@/lib/mongoConnect";
 import { NextApiRequest, NextApiResponse } from "next";
 import { User } from "@/models/user";
 import { runMiddleware } from "@/lib/middleware";
-import verifyToken from '@/lib/verifyToken';
-
+import verifyToken from "@/lib/verifyToken";
 
 // Get ALL POSTS - POPULATES AUTHOR AND COMMENTS
 // Create a POST
-async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "GET" && req.method !== "POST") {
     return res.status(405).json({ message: "Method Not Allowed" });
   }
@@ -41,7 +37,7 @@ async function handler(
     //
     // Create a POST
     else if (req.method === "POST") {
-      const { content } = req.body;
+      const { content, imgURL = "" } = req.body;
 
       if (!content) {
         return res.status(400).json({ message: "Bad Request" });
@@ -55,6 +51,7 @@ async function handler(
 
       const newPost = new Post({
         content,
+        imgURL,
         author: userId,
       });
 
@@ -76,8 +73,7 @@ async function getPosts() {
   return posts;
 }
 
-
 export default async function myAPI(req: NextApiRequest, res: NextApiResponse) {
   await runMiddleware(req, res);
   return handler(req, res);
-}   
+}
