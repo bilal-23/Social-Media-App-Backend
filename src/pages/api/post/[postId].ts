@@ -46,7 +46,7 @@ async function handler(
         // UPDATE POST BY ID
         else if (req.method === "PATCH") {
             // GET UPDATED CONTENT FROM BODY
-            const { content } = req.body;
+            const { content, imageUrl } = req.body;
             if (!content) return res.status(400).json({ message: "Content is required" });
 
             // UPDATE POST BY ID
@@ -55,6 +55,7 @@ async function handler(
             // CHECK IF AUTHOR IS CURRENT USER
             if (post.author.toString() !== userId) return res.status(401).json({ message: "You are not allowed to edit this post" });
             post.content = content;
+            post.imageUrl = imageUrl;
             await post.save();
 
             return res.status(200).json({ message: "Post updated successfully" });
