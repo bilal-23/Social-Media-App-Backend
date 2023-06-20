@@ -47,7 +47,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     // UPDATE POST BY ID
     else if (req.method === "PATCH") {
       // GET UPDATED CONTENT FROM BODY
-      const { content, imgURL } = req.body;
+      const { content, imgURL = "" } = req.body;
       if (!content)
         return res.status(400).json({ message: "Content is required" });
 
