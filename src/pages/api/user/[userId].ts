@@ -62,7 +62,8 @@ async function getUserById(userId: string) {
             populate: {
                 path: 'author',
                 select: '_id firstName pic username'
-            }
+            },
+            match: { bookmarks: { $exists: true, $not: { $size: 0 } } }
         });
 }
 
