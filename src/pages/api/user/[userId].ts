@@ -34,9 +34,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       return res.status(400).json({ message: "User ID is required" });
 
     // GET USER BY ID
-    console.log("Up here");
     const user = await getUserById(userId);
-    console.log("Testing", userId);
     if (!user) return res.status(404).json({ message: "User not found" });
     // IF AUTH USER IS NOT THE SAME AS USER ID, REMOVE EMAIL AND BOOKMARKS
     if (authUserId.toString() !== userId.toString()) {
@@ -51,16 +49,21 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 }
 
 async function getUserById(userId: string) {
-  return await User.findById(userId)
+  const user = await User.findById(userId)
     .populate("following", "_id firstName pic username")
-    .populate("followers", "_id firstName pic username")
-    .populate({
+    .populate("followers", "_id firstName pic username");
+
+  if (user.bookmarks && user.bookmarks.length > 0) {
+    await user.populate({
       path: "bookmarks",
       populate: {
         path: "author",
         select: "_id firstName pic username",
       },
     });
+  }
+
+  return user;
 }
 
 async function deleteUserById(userId: string) {
