@@ -66,8 +66,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 async function getPosts() {
   const posts = await Post.find({})
     .populate([
-      { path: "author", select: "_id firstName pic username" },
-      { path: "comments.user", select: "_id firstName pic username" },
+      { path: "author", select: "_id firstName pic lastName username" },
+      { path: "comments.user", select: "_id firstName pic lastName username" },
     ])
     .sort({ createdAt: -1 }); // -1: DESC, 1: ASC
   return posts;
