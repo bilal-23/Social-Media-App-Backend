@@ -55,15 +55,15 @@ async function handler(
 
 async function getUserById(userId: string) {
     const user = await User.findById(userId)
-        .populate('following', '_id firstName pic username')
-        .populate('followers', '_id firstName pic username');
+        .populate('following', '_id firstName lastName pic username')
+        .populate('followers', '_id firstName lastName pic username');
 
     if(user.bookmarks && user.bookmarks.length > 0) {
         await user.populate({
             path: 'bookmarks',
             populate: {
                 path: 'author',
-                select: '_id firstName pic username'
+                select: '_id firstName lastName pic username'
             }
         });
     }
