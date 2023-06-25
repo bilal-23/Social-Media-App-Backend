@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import Cors from "cors";
 const corsOptions: any = Cors({
-  origin: "*", // Replace * with the specific origin(s) allowed to access your API
+  origin: "http://localhost:5173/", // Replace * with the specific origin(s) allowed to access your API
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Specify the HTTP methods allowed
   allowedHeaders: ["Content-Type", "Authorization"], // Specify the allowed headers
 });
