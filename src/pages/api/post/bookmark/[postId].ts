@@ -21,7 +21,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   const tokenData: any = verifyToken(token);
   // if token is not valid, return error response
   if (!tokenData) {
-    return res.status(401).json({ message: "Unauthorized" });
+    return res.status(401).json({ message: "Unauthorized token data" });
   }
   // if token is valid, extract userId from token
   const userId = tokenData.userId;
