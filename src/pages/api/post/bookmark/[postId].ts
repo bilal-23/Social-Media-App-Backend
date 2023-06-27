@@ -13,7 +13,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     return res.status(405).json({ message: "Method Not Allowed" });
   }
   // get auth token from header
-  const token = req.headers.Authorization;
+  const token = req.headers.authorization;
   // if token is not provided, return error response
   if (!token) {
     return res.status(401).json({ message: "Unauthorized token" });
