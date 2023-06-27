@@ -16,7 +16,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   const token = req.headers.authorization;
   // if token is not provided, return error response
   if (!token) {
-    return res.status(401).json({ message: "Unauthorized" });
+    return res.status(401).json({ message: "Unauthorized token" });
   }
   const tokenData: any = verifyToken(token);
   // if token is not valid, return error response
