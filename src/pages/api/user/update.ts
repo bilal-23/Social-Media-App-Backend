@@ -60,16 +60,21 @@ async function handler(
 }
 
 async function getUserById(userId: string) {
-    return await User.findById(userId)
+    const user = await User.findById(userId)
         .populate('following', '_id firstName pic username')
         .populate('followers', '_id firstName pic username')
-        .populate({
+
+    if (user.bookmarks && user.bookmarks.length > 0) {
+        await user.populate({
             path: 'bookmarks',
             populate: {
                 path: 'author',
                 select: '_id firstName pic username'
             }
         });
+    }
+
+    return user;
 }
 
 export default async function myAPI(req: NextApiRequest, res: NextApiResponse) {

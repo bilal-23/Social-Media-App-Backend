@@ -17,6 +17,7 @@ const postSchema = new mongoose.Schema({
     },
 
     comments: { type: [commentSchema], default: [] }, //contains user Ids of users who commented on this post, along with their comments and timestamps
+    imageUrl: { type: String, default: '' }, // Add imageUrl field
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
 });

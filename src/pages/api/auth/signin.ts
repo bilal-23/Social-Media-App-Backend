@@ -25,9 +25,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (!emailRegex.test(email)) {
         return res.status(400).json({ message: 'Bad request', error: 'Invalid email' });
     }
-    if (password.length < 6) {
-        return res.status(400).json({ message: 'Bad request', error: 'Password should be at least 6 characters in length' });
-    }
     if (typeof email !== 'string' || typeof password !== 'string') {
         return res.status(400).json({ message: 'Bad request' });
     }

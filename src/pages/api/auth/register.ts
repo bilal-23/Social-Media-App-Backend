@@ -30,6 +30,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
             return res.status(400).json({ message: 'Bad request', error: 'Invalid email' });
         }
 
+        if (password.length < 6) {
+          return res.status(400).json({ message: 'Bad request', error: 'Password should be at least 6 characters in length' });
+        }
+
         const hashedPassword = await hashPassword(password);
         // Create a new user object
         const newUser = new User({

@@ -41,7 +41,7 @@ async function handler(
     //
     // Create a POST
     else if (req.method === "POST") {
-      const { content } = req.body;
+      const { content, imageUrl = '' } = req.body;
 
       if (!content) {
         return res.status(400).json({ message: "Bad Request" });
@@ -55,6 +55,7 @@ async function handler(
 
       const newPost = new Post({
         content,
+        imageUrl,
         author: userId,
       });
 
@@ -69,8 +70,8 @@ async function handler(
 async function getPosts() {
   const posts = await Post.find({})
     .populate([
-      { path: "author", select: "_id firstName pic username" },
-      { path: "comments.user", select: "_id firstName pic username" },
+      { path: "author", select: "_id firstName lastName pic username" },
+      { path: "comments.user", select: "_id firstName lastName pic username" },
     ])
     .sort({ createdAt: -1 }); // -1: DESC, 1: ASC
   return posts;

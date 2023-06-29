@@ -46,7 +46,7 @@ async function handler(
         // UPDATE POST BY ID
         else if (req.method === "PATCH") {
             // GET UPDATED CONTENT FROM BODY
-            const { content } = req.body;
+            const { content, imageUrl = '' } = req.body;
             if (!content) return res.status(400).json({ message: "Content is required" });
 
             // UPDATE POST BY ID
@@ -55,6 +55,7 @@ async function handler(
             // CHECK IF AUTHOR IS CURRENT USER
             if (post.author.toString() !== userId) return res.status(401).json({ message: "You are not allowed to edit this post" });
             post.content = content;
+            post.imageUrl = imageUrl;
             await post.save();
 
             return res.status(200).json({ message: "Post updated successfully" });
@@ -80,10 +81,10 @@ async function handler(
 async function getPostById(postId: string) {
     return await Post.findById(postId).populate(
         [
-            { path: "author", select: "_id firstName pic username" },
-            { path: "comments.user", select: "_id firstName pic username" },
-            { path: "likes.likedBy", select: "_id firstName pic username" },
-            { path: "likes.dislikedBy", select: "_id firstName pic username" }
+            { path: "author", select: "_id firstName lastName pic username" },
+            { path: "comments.user", select: "_id firstName lastName pic username" },
+            { path: "likes.likedBy", select: "_id firstName lastName pic username" },
+            { path: "likes.dislikedBy", select: "_id firstName lastName pic username" }
         ]
     );
 }
