@@ -17,17 +17,14 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
   // Check if the email and password are valid
   if (!email || !password) {
-    return res.status(400).json({ message: "Bad request" });
+    return res.status(400).json({ message: 'Bad request' });
   }
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email)) {
-    return res
-      .status(400)
-      .json({ message: "Bad request", error: "Invalid email" });
+    return res.status(400).json({ message: 'Bad request', error: 'Invalid email' });
   }
-
-  if (typeof email !== "string" || typeof password !== "string") {
-    return res.status(400).json({ message: "Bad request" });
+  if (typeof email !== 'string' || typeof password !== 'string') {
+    return res.status(400).json({ message: 'Bad request' });
   }
 
   try {
@@ -51,16 +48,16 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     return res.status(200).json({
       message: "Login successfully",
       token: token,
-      user: { email, name: user.firstName },
+      user: { email, name: user.firstName }
     });
-  } catch (error) {
-    return res
-      .status(500)
-      .json({ message: "Cannot login, please try again later." });
   }
+  catch (error) {
+    return res.status(500).json({ message: "Cannot login, please try again later.", error: error });
+  }
+
 }
 
 export default async function myAPI(req: NextApiRequest, res: NextApiResponse) {
   await runMiddleware(req, res);
   return handler(req, res);
-}
+}   

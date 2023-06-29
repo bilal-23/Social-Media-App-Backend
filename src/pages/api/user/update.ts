@@ -58,16 +58,16 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
 async function getUserById(userId: string) {
   const user = await User.findById(userId)
-    .populate("following", "_id firstName pic username")
-    .populate("followers", "_id firstName pic username");
+    .populate('following', '_id firstName pic username')
+    .populate('followers', '_id firstName pic username')
 
   if (user.bookmarks && user.bookmarks.length > 0) {
     await user.populate({
-      path: "bookmarks",
+      path: 'bookmarks',
       populate: {
-        path: "author",
-        select: "_id firstName pic username",
-      },
+        path: 'author',
+        select: '_id firstName pic username'
+      }
     });
   }
 
@@ -77,4 +77,4 @@ async function getUserById(userId: string) {
 export default async function myAPI(req: NextApiRequest, res: NextApiResponse) {
   await runMiddleware(req, res);
   return handler(req, res);
-}
+}  

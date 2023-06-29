@@ -85,15 +85,17 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 }
 
 async function getPostById(postId: string) {
-  return await Post.findById(postId).populate([
-    { path: "author", select: "_id firstName lastName pic username" },
-    { path: "comments.user", select: "_id firstName lastName pic username" },
-    { path: "likes.likedBy", select: "_id firstName lastName pic username" },
-    { path: "likes.dislikedBy", select: "_id firstName lastName pic username" },
-  ]);
+  return await Post.findById(postId).populate(
+    [
+      { path: "author", select: "_id firstName lastName pic username" },
+      { path: "comments.user", select: "_id firstName lastName pic username" },
+      { path: "likes.likedBy", select: "_id firstName lastName pic username" },
+      { path: "likes.dislikedBy", select: "_id firstName lastName pic username" }
+    ]
+  );
 }
 
 export default async function myAPI(req: NextApiRequest, res: NextApiResponse) {
   await runMiddleware(req, res);
   return handler(req, res);
-}
+}   

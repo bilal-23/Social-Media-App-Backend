@@ -37,25 +37,17 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     if (!user) return res.status(404).json({ message: "User not found" });
 
     // GET POST BY AUTHOR ID
-    const posts = await Post.find({ author: new ObjectId(userId) })
-      .populate([
+    const posts = await Post.find({ author: new ObjectId(userId) }).populate(
+      [
         { path: "author", select: "_id firstName lastName pic username" },
-        {
-          path: "comments.user",
-          select: "_id firstName lastName pic username",
-        },
-        {
-          path: "likes.likedBy",
-          select: "_id firstName lastName pic username",
-        },
-        {
-          path: "likes.dislikedBy",
-          select: "_id firstName lastName pic username",
-        },
-      ])
-      .sort({ createdAt: -1 });
+        { path: "comments.user", select: "_id firstName lastName pic username" },
+        { path: "likes.likedBy", select: "_id firstName lastName pic username" },
+        { path: "likes.dislikedBy", select: "_id firstName lastName pic username" }
+      ]
+    ).sort({ createdAt: -1 });
     return res.status(200).json({ posts });
-  } catch (error) {
+  }
+  catch (error) {
     return res.status(500).json({ message: "Internal Server Error", error });
   }
 }
@@ -63,4 +55,4 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 export default async function myAPI(req: NextApiRequest, res: NextApiResponse) {
   await runMiddleware(req, res);
   return handler(req, res);
-}
+}   

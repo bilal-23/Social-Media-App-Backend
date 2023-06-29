@@ -75,5 +75,4 @@ async function getPosts() {
 
 export default async function myAPI(req: NextApiRequest, res: NextApiResponse) {
   await runMiddleware(req, res);
-  return handler(req, res);
 }
