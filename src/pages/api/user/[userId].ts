@@ -49,6 +49,8 @@ async function handler(
         if (authUserId.toString() !== userId.toString()) {
             user.email = undefined;
             user.bookmarks = undefined;
+            user.password = undefined;
+            return res.status(200).json({ user });
         };
 
         // Remove the ids from bookmark array if it no longer exists in POSTS collection
