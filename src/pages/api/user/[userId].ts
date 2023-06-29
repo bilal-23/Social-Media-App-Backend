@@ -1,5 +1,6 @@
 import { ObjectId } from "mongodb";
 import { User } from "@/models/user";
+import { Post } from "@/models/post";
 import { connectMongoDB } from "@/lib/mongoConnect";
 import { NextApiRequest, NextApiResponse } from "next";
 import { runMiddleware } from "@/lib/middleware";
@@ -48,7 +49,22 @@ async function handler(
         if (authUserId.toString() !== userId.toString()) {
             user.email = undefined;
             user.bookmarks = undefined;
+        };
+
+        // Remove the ids from bookmark array if it no longer exists in POSTS collection
+        const bookmarks = user.bookmarks;
+        if (bookmarks.length > 0) {
+            const bookmarkedPosts = await Post.find({ _id: { $in: bookmarks } });
+            console.log({ bookmarkedPosts })
+            if (bookmarkedPosts.length === 0) {
+                user.bookmarks = [];
+            } else {
+                const bookmarkedPostIds = bookmarkedPosts.map(post => post._id.toString());
+                user.bookmarks = bookmarkedPostIds;
+            }
+            await user.save();
         }
+
         user.password = undefined;
         return res.status(200).json({ user });
 
@@ -62,16 +78,6 @@ async function getUserById(userId: string) {
     const user = await User.findById(userId)
         .populate('following', '_id firstName lastName pic username')
         .populate('followers', '_id firstName lastName pic username');
-
-    // if (user.bookmarks && user.bookmarks.length > 0) {
-    //     await user.populate({
-    //         path: 'bookmarks',
-    //         populate: {
-    //             path: 'author',
-    //             select: '_id firstName lastName pic username'
-    //         }
-    //     });
-    // }
 
     return user;
 

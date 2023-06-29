@@ -31,7 +31,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         }
 
         if (password.length < 6) {
-          return res.status(400).json({ message: 'Bad request', error: 'Password should be at least 6 characters in length' });
+            return res.status(400).json({ message: 'Bad request', error: 'Password should be at least 6 characters in length' });
         }
 
         const hashedPassword = await hashPassword(password);
@@ -41,6 +41,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
             lastName,
             username,
             email,
+            pic: "https://cdn-icons-png.flaticon.com/512/236/236832.png?w=740&t=st=1688058757~exp=1688059357~hmac=6313bbd594461cd1e1ce1f0b15c6d874fc087019a4c812996c10a114e59ba82e",
             password: hashedPassword
         });
 
