@@ -50,7 +50,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         });
     }
     catch (error) {
-        return res.status(500).json({ message: "Cannot login, please try again later." });
+        return res.status(500).json({ message: "Cannot login, please try again later.", error: error });
     }
 
 }

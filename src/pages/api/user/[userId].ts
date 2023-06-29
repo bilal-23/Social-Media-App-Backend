@@ -31,7 +31,12 @@ async function handler(
         return res.status(405).json({ message: "Method Not Allowed" });
     }
     try {
-        await connectMongoDB();
+        try {
+            await connectMongoDB();
+        }
+        catch (error) {
+            return res.status(500).json({ message: "Internal Server Error, Cannot Connect DB", error });
+        }
         // GET USER ID FROM URL
         const userId = req.query.userId as string;
         if (!userId) return res.status(400).json({ message: "User ID is required" });
@@ -58,18 +63,18 @@ async function getUserById(userId: string) {
         .populate('following', '_id firstName lastName pic username')
         .populate('followers', '_id firstName lastName pic username');
 
-    if(user.bookmarks && user.bookmarks.length > 0) {
-        await user.populate({
-            path: 'bookmarks',
-            populate: {
-                path: 'author',
-                select: '_id firstName lastName pic username'
-            }
-        });
-    }
+    // if (user.bookmarks && user.bookmarks.length > 0) {
+    //     await user.populate({
+    //         path: 'bookmarks',
+    //         populate: {
+    //             path: 'author',
+    //             select: '_id firstName lastName pic username'
+    //         }
+    //     });
+    // }
 
     return user;
-        
+
 }
 
 async function deleteUserById(userId: string) {
